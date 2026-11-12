@@ -1,0 +1,45 @@
+# Datos de prueba (ficticios). Las contraseñas reales de los usuarios van en .env
+login:
+  invalid_email: "noexiste@healthyglow.com"
+  invalid_password: "ClaveIncorrecta123"
+  malformed_email: "jefa-sin-arroba"
+
+registro_cliente:
+  valid:
+    name: "Cliente QA Automatizado"
+    phone: "71234567"
+    password: "ClienteQA2026"
+    password_confirmation: "ClienteQA2026"
+    ci: "9876543 LP"
+    address: "Zona Sur, Calle 21 #456, La Paz"
+    with_allergy: true
+  password_mismatch:
+    name: "Cliente QA Error"
+    phone: "71234568"
+    password: "ClienteQA2026"
+    password_confirmation: "OtraClave2026"
+    address: "Zona Central, La Paz"
+  short_password:
+    name: "Cliente QA Corta"
+    phone: "71234569"
+    password: "Abc12"
+    password_confirmation: "Abc12"
+    address: "El Alto, La Paz"
+  duplicate_email: "pedro@gmail.com"
+
+productos:
+  search_existing: "VITALOE"
+  expected_match: "Jugo de Aloe Vera"
+  expected_absent: "Cordyceps"
+  search_missing: "ProductoInexistenteXYZ"
+  search_lowercase: "vitaloe"
+  expected_lowercase_match: "Jugo de Aloe Vera"
+  nuevo:
+    name_prefix: "QA Batido Proteico"
+    category: "Bebidas Frías"
+    price: 22.50
+    cost: 9
+    preparation_time: 6
+    description: "Producto creado por la automatización de pruebas"
+    ingredients: "Leche de almendras, plátano, avena"
+  precio_negativo: -5

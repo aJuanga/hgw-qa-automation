@@ -1,0 +1,145 @@
+{
+  "run_id": "RUN_20261112_185954",
+  "date": "2026-11-12 19:00:06",
+  "duration": 11.65,
+  "environment": {
+    "base_url": "http://localhost:8000",
+    "app": "Sistema HGW - Cafetería Saludable",
+    "app_version": "v2.3 (rama rediseno-ui)",
+    "browser": "chrome",
+    "headless": true,
+    "os": "Linux 6.18.44-fc-v378",
+    "python": "3.13.18",
+    "selenium": "4.39.0"
+  },
+  "suites": [
+    "autenticacion",
+    "productos",
+    "seguridad"
+  ],
+  "summary": {
+    "PASS": 3,
+    "FAIL": 0,
+    "BLOCKED": 0,
+    "NOT RUN": 0,
+    "total": 3,
+    "pass_rate": 100.0
+  },
+  "results": [
+    {
+      "id": "TC-018",
+      "title": "Mensaje de credenciales inválidas en español",
+      "suite": "autenticacion",
+      "requirement": "RF-01, RNF-07",
+      "priority": "Baja",
+      "technique": "Prueba de usabilidad (idioma de la interfaz)",
+      "expected": "Todo el mensaje de error se muestra en español, igual que el resto de la interfaz",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.78,
+      "started_at": "2026-11-12 18:59:54",
+      "checks": [
+        {
+          "description": "Permanece en la página /login",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "El detalle del error no aparece en inglés",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "mensaje_error_idioma",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_185954/screenshots/TC-018_01_mensaje_error_idioma.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-019",
+      "title": "Búsqueda de productos sin distinguir mayúsculas",
+      "suite": "productos",
+      "requirement": "RF-07, RNF-07",
+      "priority": "Media",
+      "technique": "Partición de equivalencia (mayúsculas / minúsculas)",
+      "expected": "Buscar 'vitaloe' en minúsculas también lista 'Vitaloe – Jugo de Aloe Vera'",
+      "status": "PASS",
+      "error": "",
+      "duration": 4.71,
+      "started_at": "2026-11-12 18:59:58",
+      "checks": [
+        {
+          "description": "Precondición: sesión de Jefa iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "La búsqueda se refleja en la URL",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Aparece 'Jugo de Aloe Vera' al buscar 'vitaloe'",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "busqueda_minusculas",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_185954/screenshots/TC-019_01_busqueda_minusculas.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-016",
+      "title": "Cliente inicia sesión y accede a su portal",
+      "suite": "seguridad",
+      "requirement": "RF-02, RF-12",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "Redirige a /client/dashboard y muestra el portal del cliente sin errores",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.16,
+      "started_at": "2026-11-12 19:00:03",
+      "checks": [
+        {
+          "description": "Precondición: sesión de cliente iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Redirige a /client/dashboard",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "El portal carga sin error del servidor",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "portal_cliente",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_185954/screenshots/TC-016_01_portal_cliente.png"
+        }
+      ],
+      "metrics": {}
+    }
+  ],
+  "analysis": {
+    "source": "reglas",
+    "model": null,
+    "text": "Resumen general: se ejecutaron 3 casos; 3 aprobados, 0 fallidos y 0 bloqueados (aprobación 100.0%).\nTodos los casos cumplieron el resultado esperado. No se identifican defectos en esta corrida."
+  },
+  "reports": {
+    "html": "/home/claude/hgw-qa-automation/reports/RUN_20261112_185954/reporte_RUN_20261112_185954.html",
+    "docx": "/home/claude/hgw-qa-automation/reports/RUN_20261112_185954/informe_RUN_20261112_185954.docx"
+  }
+}

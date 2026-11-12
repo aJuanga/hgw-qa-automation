@@ -1,0 +1,749 @@
+{
+  "run_id": "RUN_20261112_190636",
+  "date": "2026-11-12 19:07:56",
+  "duration": 79.37,
+  "environment": {
+    "base_url": "http://localhost:8000",
+    "app": "Sistema HGW - Cafetería Saludable",
+    "app_version": "v2.3 (rama rediseno-ui)",
+    "browser": "chrome",
+    "headless": true,
+    "os": "Linux 6.18.44-fc-v378",
+    "python": "3.13.18",
+    "selenium": "4.39.0"
+  },
+  "suites": [
+    "autenticacion",
+    "productos",
+    "registro",
+    "rendimiento",
+    "seguridad"
+  ],
+  "summary": {
+    "PASS": 19,
+    "FAIL": 0,
+    "BLOCKED": 0,
+    "NOT RUN": 0,
+    "total": 19,
+    "pass_rate": 100.0
+  },
+  "results": [
+    {
+      "id": "TC-001",
+      "title": "Inicio de sesión con credenciales válidas (Jefa)",
+      "suite": "autenticacion",
+      "requirement": "RF-01, RF-02",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "Redirige al Dashboard Ejecutivo y muestra el rol Jefa",
+      "status": "PASS",
+      "error": "",
+      "duration": 4.68,
+      "started_at": "2026-11-12 19:06:36",
+      "checks": [
+        {
+          "description": "La URL cambia a /jefa/dashboard",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Se muestra el 'Panel ejecutivo'",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Se muestra el rol 'Jefa' en el panel",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "formulario_login",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-001_01_formulario_login.png"
+        },
+        {
+          "label": "dashboard_jefa",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-001_02_dashboard_jefa.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-002",
+      "title": "Inicio de sesión con contraseña incorrecta",
+      "suite": "autenticacion",
+      "requirement": "RF-01",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "Permanece en /login y muestra mensaje de credenciales inválidas",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.24,
+      "started_at": "2026-11-12 19:06:41",
+      "checks": [
+        {
+          "description": "Permanece en la página /login",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Muestra el mensaje de credenciales inválidas",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No se accede al Panel ejecutivo",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "error_credenciales",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-002_01_error_credenciales.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-003",
+      "title": "Inicio de sesión con campos vacíos",
+      "suite": "autenticacion",
+      "requirement": "RF-01",
+      "priority": "Alta",
+      "technique": "Valores límite (longitud 0)",
+      "expected": "El navegador bloquea el envío por campos obligatorios",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.22,
+      "started_at": "2026-11-12 19:06:44",
+      "checks": [
+        {
+          "description": "El campo correo muestra validación de obligatorio",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "El formulario no se envía (permanece en /login)",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "campos_vacios",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-003_01_campos_vacios.png"
+        }
+      ],
+      "metrics": {
+        "validation_message": "Please fill out this field."
+      }
+    },
+    {
+      "id": "TC-004",
+      "title": "Inicio de sesión con correo sin formato válido",
+      "suite": "autenticacion",
+      "requirement": "RF-01",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "El campo de correo rechaza el valor sin '@'",
+      "status": "PASS",
+      "error": "",
+      "duration": 2.9,
+      "started_at": "2026-11-12 19:06:48",
+      "checks": [
+        {
+          "description": "El navegador indica formato de correo inválido",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Permanece en /login",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "correo_malformado",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-004_01_correo_malformado.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-005",
+      "title": "Cierre de sesión de la Jefa",
+      "suite": "autenticacion",
+      "requirement": "RF-01",
+      "priority": "Media",
+      "technique": "Partición de equivalencia",
+      "expected": "Se cierra la sesión y las rutas protegidas vuelven a pedir login",
+      "status": "PASS",
+      "error": "",
+      "duration": 4.85,
+      "started_at": "2026-11-12 19:06:50",
+      "checks": [
+        {
+          "description": "Sesión iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Al volver al dashboard redirige a /login",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Se muestra el formulario de inicio de sesión",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "sesion_cerrada",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-005_01_sesion_cerrada.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-018",
+      "title": "Mensaje de credenciales inválidas en español",
+      "suite": "autenticacion",
+      "requirement": "RF-01, RNF-07",
+      "priority": "Baja",
+      "technique": "Prueba de usabilidad (idioma de la interfaz)",
+      "expected": "Todo el mensaje de error se muestra en español, igual que el resto de la interfaz",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.16,
+      "started_at": "2026-11-12 19:06:55",
+      "checks": [
+        {
+          "description": "Permanece en la página /login",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "El detalle del error no aparece en inglés",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "mensaje_error_idioma",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-018_01_mensaje_error_idioma.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-010",
+      "title": "Búsqueda de producto existente por nombre",
+      "suite": "productos",
+      "requirement": "RF-07",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "El listado muestra solo el producto 'Vitaloe' (Jugo de Aloe Vera)",
+      "status": "PASS",
+      "error": "",
+      "duration": 5.07,
+      "started_at": "2026-11-12 19:06:58",
+      "checks": [
+        {
+          "description": "Precondición: sesión de Jefa iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Aparece 'Jugo de Aloe Vera' en los resultados",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No aparece 'Cordyceps' (no coincide)",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "La búsqueda se refleja en la URL",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "busqueda_vitaloe",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-010_01_busqueda_vitaloe.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-011",
+      "title": "Búsqueda de producto inexistente",
+      "suite": "productos",
+      "requirement": "RF-07",
+      "priority": "Media",
+      "technique": "Partición de equivalencia",
+      "expected": "El listado no muestra productos",
+      "status": "PASS",
+      "error": "",
+      "duration": 4.81,
+      "started_at": "2026-11-12 19:07:04",
+      "checks": [
+        {
+          "description": "Precondición: sesión de Jefa iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No aparecen productos del catálogo",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No existe ninguna fila con el término buscado",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "busqueda_sin_resultados",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-011_01_busqueda_sin_resultados.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-012",
+      "title": "Registro de un producto nuevo con datos válidos",
+      "suite": "productos",
+      "requirement": "RF-07",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "Muestra 'Producto creado exitosamente' y el producto aparece en la búsqueda",
+      "status": "PASS",
+      "error": "",
+      "duration": 8.09,
+      "started_at": "2026-11-12 19:07:08",
+      "checks": [
+        {
+          "description": "Precondición: sesión de Jefa iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "El servidor procesa el alta sin error interno",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Muestra 'Producto creado exitosamente'",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "El nuevo producto aparece al buscarlo",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "formulario_producto",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-012_01_formulario_producto.png"
+        },
+        {
+          "label": "producto_creado",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-012_02_producto_creado.png"
+        }
+      ],
+      "metrics": {
+        "producto_creado": "QA Batido Proteico 1112190710997"
+      }
+    },
+    {
+      "id": "TC-013",
+      "title": "Registro de producto con precio negativo",
+      "suite": "productos",
+      "requirement": "RF-07",
+      "priority": "Alta",
+      "technique": "Valores límite (precio < 0)",
+      "expected": "El sistema rechaza el precio negativo y no crea el producto",
+      "status": "PASS",
+      "error": "",
+      "duration": 5.05,
+      "started_at": "2026-11-12 19:07:16",
+      "checks": [
+        {
+          "description": "Precondición: sesión de Jefa iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Permanece en el formulario de creación",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No muestra 'Producto creado exitosamente'",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "precio_negativo",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-013_01_precio_negativo.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-019",
+      "title": "Búsqueda de productos sin distinguir mayúsculas",
+      "suite": "productos",
+      "requirement": "RF-07, RNF-07",
+      "priority": "Media",
+      "technique": "Partición de equivalencia (mayúsculas / minúsculas)",
+      "expected": "Buscar 'vitaloe' en minúsculas también lista 'Vitaloe – Jugo de Aloe Vera'",
+      "status": "PASS",
+      "error": "",
+      "duration": 4.48,
+      "started_at": "2026-11-12 19:07:22",
+      "checks": [
+        {
+          "description": "Precondición: sesión de Jefa iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "La búsqueda se refleja en la URL",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Aparece 'Jugo de Aloe Vera' al buscar 'vitaloe'",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "busqueda_minusculas",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-019_01_busqueda_minusculas.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-006",
+      "title": "Registro de cliente con datos válidos",
+      "suite": "registro",
+      "requirement": "RF-01, RF-10",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "Muestra '¡Registro exitoso!' y el nuevo cliente puede iniciar sesión",
+      "status": "PASS",
+      "error": "",
+      "duration": 6.82,
+      "started_at": "2026-11-12 19:07:26",
+      "checks": [
+        {
+          "description": "Se muestra el mensaje de registro exitoso",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "El cliente registrado puede iniciar sesión",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "registro_exitoso",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-006_01_registro_exitoso.png"
+        },
+        {
+          "label": "login_nuevo_cliente",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-006_02_login_nuevo_cliente.png"
+        }
+      ],
+      "metrics": {
+        "email_registrado": "qa.cliente.1112190726868@hgw-test.com"
+      }
+    },
+    {
+      "id": "TC-007",
+      "title": "Registro con contraseñas que no coinciden",
+      "suite": "registro",
+      "requirement": "RF-01",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "Rechaza el registro con 'Las contraseñas no coinciden'",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.25,
+      "started_at": "2026-11-12 19:07:33",
+      "checks": [
+        {
+          "description": "Muestra el mensaje de contraseñas distintas",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No muestra registro exitoso",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "password_no_coincide",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-007_01_password_no_coincide.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-008",
+      "title": "Registro con contraseña menor a 8 caracteres",
+      "suite": "registro",
+      "requirement": "RF-01",
+      "priority": "Alta",
+      "technique": "Valores límite (7 caracteres < mínimo 8)",
+      "expected": "Rechaza la contraseña corta con mensaje de mínimo 8 caracteres",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.15,
+      "started_at": "2026-11-12 19:07:36",
+      "checks": [
+        {
+          "description": "Muestra el mensaje de longitud mínima",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No muestra registro exitoso",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "password_corta",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-008_01_password_corta.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-009",
+      "title": "Registro con correo ya existente",
+      "suite": "registro",
+      "requirement": "RF-01",
+      "priority": "Media",
+      "technique": "Partición de equivalencia",
+      "expected": "Rechaza el registro con 'Este correo electrónico ya está registrado'",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.24,
+      "started_at": "2026-11-12 19:07:39",
+      "checks": [
+        {
+          "description": "Muestra el mensaje de correo duplicado",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No muestra registro exitoso",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "correo_duplicado",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-009_01_correo_duplicado.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-017",
+      "title": "Tiempo de carga de páginas principales menor a 3 s",
+      "suite": "rendimiento",
+      "requirement": "RNF-05",
+      "priority": "Media",
+      "technique": "Medición de tiempo de carga (navegador)",
+      "expected": "Login, dashboard y productos cargan en menos de 3 segundos",
+      "status": "PASS",
+      "error": "",
+      "duration": 4.34,
+      "started_at": "2026-11-12 19:07:42",
+      "checks": [
+        {
+          "description": "/login carga en 0.281 s (< 3.0 s)",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "/jefa/dashboard carga en 0.374 s (< 3.0 s)",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "/products carga en 0.198 s (< 3.0 s)",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "/inventory carga en 0.328 s (< 3.0 s)",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "/orders carga en 0.426 s (< 3.0 s)",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "productos_cargado",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-017_01_productos_cargado.png"
+        }
+      ],
+      "metrics": {
+        "carga /login (s)": 0.281,
+        "carga /jefa/dashboard (s)": 0.374,
+        "carga /products (s)": 0.198,
+        "carga /inventory (s)": 0.328,
+        "carga /orders (s)": 0.426
+      }
+    },
+    {
+      "id": "TC-014",
+      "title": "Empleado intenta acceder a Reportes (exclusivo de Jefa)",
+      "suite": "seguridad",
+      "requirement": "RF-02",
+      "priority": "Alta",
+      "technique": "Tabla de decisión (rol x recurso)",
+      "expected": "El sistema responde 403 'No tienes permiso'",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.09,
+      "started_at": "2026-11-12 19:07:47",
+      "checks": [
+        {
+          "description": "Precondición: sesión de empleado iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Se muestra acceso denegado (403)",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "No se muestra el contenido de reportes",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "empleado_403",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-014_01_empleado_403.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-015",
+      "title": "Usuario no autenticado intenta crear productos",
+      "suite": "seguridad",
+      "requirement": "RF-02, RNF-01",
+      "priority": "Alta",
+      "technique": "Tabla de decisión (rol x recurso)",
+      "expected": "Redirige a /login sin mostrar el formulario",
+      "status": "PASS",
+      "error": "",
+      "duration": 2.36,
+      "started_at": "2026-11-12 19:07:50",
+      "checks": [
+        {
+          "description": "Redirige a /login",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Se muestra el formulario de inicio de sesión",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "anonimo_redirigido",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-015_01_anonimo_redirigido.png"
+        }
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "TC-016",
+      "title": "Cliente inicia sesión y accede a su portal",
+      "suite": "seguridad",
+      "requirement": "RF-02, RF-12",
+      "priority": "Alta",
+      "technique": "Partición de equivalencia",
+      "expected": "Redirige a /client/dashboard y muestra el portal del cliente sin errores",
+      "status": "PASS",
+      "error": "",
+      "duration": 3.56,
+      "started_at": "2026-11-12 19:07:52",
+      "checks": [
+        {
+          "description": "Precondición: sesión de cliente iniciada",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "Redirige a /client/dashboard",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "description": "El portal carga sin error del servidor",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "screenshots": [
+        {
+          "label": "portal_cliente",
+          "path": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/screenshots/TC-016_01_portal_cliente.png"
+        }
+      ],
+      "metrics": {}
+    }
+  ],
+  "analysis": {
+    "source": "reglas",
+    "model": null,
+    "text": "Resumen general: se ejecutaron 19 casos; 19 aprobados, 0 fallidos y 0 bloqueados (aprobación 100.0%).\nTodos los casos cumplieron el resultado esperado. No se identifican defectos en esta corrida."
+  },
+  "reports": {
+    "html": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/reporte_RUN_20261112_190636.html",
+    "docx": "/home/claude/hgw-qa-automation/reports/RUN_20261112_190636/informe_RUN_20261112_190636.docx"
+  },
+  "mail": "Enviado a juan.qa.hgw@gmail.com"
+}

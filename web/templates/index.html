@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HGW QA Runner</title>
+<style>
+:root{--g:#14532d;--g2:#1f8a4c;--ko:#c0392b;--bl:#b9770e;--ink:#1d2a24;--mut:#5d6d64;--line:#dfe7e2;--bg:#f4f7f5}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--g);color:#fff;padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:20px;margin:0}header small{opacity:.8}
+main{max-width:1200px;margin:0 auto;padding:22px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+h2{font-size:16px;margin:0 0 12px}.suite{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;padding:10px 12px}
+.suite>label{font-weight:700;text-transform:capitalize}.cases{margin:6px 0 0 24px;font-size:13px;color:var(--mut)}
+.cases label{display:block;margin:3px 0}.row{display:flex;gap:16px;align-items:center;margin:12px 0;flex-wrap:wrap}
+input[type=email]{flex:1;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+button{background:var(--g2);color:#fff;border:0;border-radius:8px;padding:11px 18px;font-size:15px;font-weight:600;cursor:pointer}
+button:disabled{background:#9bb5a6;cursor:not-allowed}
+pre{background:#0f1c15;color:#cdebd9;border-radius:10px;padding:12px;height:300px;overflow:auto;font-size:12px;white-space:pre-wrap}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left}
+.ok{color:var(--g2);font-weight:700}.ko{color:var(--ko);font-weight:700}.bl{color:var(--bl);font-weight:700}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;background:#e7f2ec;color:var(--g)}
+.full{grid-column:1/3}a{color:var(--g2)}
+</style></head><body>
+<header><div><h1>HGW QA Runner</h1><small>Selenium WebDriver · Python · Page Object Model</small></div>
+<div><small>Sistema bajo prueba:</small> <b>{{ base_url }}</b></div></header>
+<main>
+<form class="box" method="post" action="/run" id="f">
+  <h2>1. Selecciona las suites o casos</h2>
+  {% for suite, cases in suites.items() %}
+  <div class="suite">
+    <label><input type="checkbox" name="suite" value="{{ suite }}" class="s" data-s="{{ suite }}"> {{ suite }}
+      <span class="pill">{{ cases|length }} casos</span></label>
+    <div class="cases">{% for c in cases %}
+      <label><input type="checkbox" name="case" value="{{ c.id }}" class="c" data-s="{{ suite }}"> <b>{{ c.id }}</b> {{ c.title }} <i>({{ c.requirement }})</i></label>
+    {% endfor %}</div>
+  </div>{% endfor %}
+  <h2>2. Opciones</h2>
+  <div class="row"><label>Enviar resultados a:</label><input type="email" name="mail" value="{{ default_mail }}" placeholder="correo@ejemplo.com (opcional)"></div>
+  <div class="row">
+    <label><input type="checkbox" name="ai" {% if ai_ready %}checked{% endif %}> Análisis con IA {% if not ai_ready %}<small>(sin ANTHROPIC_API_KEY: se usa el analizador por reglas)</small>{% endif %}</label>
+    <label><input type="checkbox" name="headless" {% if headless %}checked{% endif %}> Navegador oculto (headless)</label>
+  </div>
+  <button id="go" {% if state.running %}disabled{% endif %}>▶ Ejecutar pruebas</button>
+</form>
+<section class="box" id="estado">
+  <h2>3. Estado de la ejecución <span id="rid" class="pill">{{ state.run_id or 'sin ejecutar' }}</span></h2>
+  <div id="sum"></div>
+  <pre id="log">Esperando ejecución...</pre>
+</section>
+<section class="box full">
+  <h2>4. Historial de ejecuciones y reportes</h2>
+  <table><tr><th>Corrida</th><th>Fecha</th><th>Suites</th><th>Total</th><th>PASS</th><th>FAIL</th><th>BLOCKED</th><th>Aprobación</th><th>Correo</th><th>Reportes</th></tr>
+  {% for r in history %}<tr><td>{{ r.run_id }}</td><td>{{ r.date }}</td><td>{{ r.suites|join(', ') }}</td><td>{{ r.summary.total }}</td>
+  <td class="ok">{{ r.summary.PASS }}</td><td class="ko">{{ r.summary.FAIL }}</td><td class="bl">{{ r.summary.BLOCKED }}</td><td>{{ r.summary.pass_rate }}%</td><td>{{ r.mail }}</td>
+  <td><a href="/reports/{{ r.run_id }}/{{ r.html }}" target="_blank">HTML</a> · <a href="/reports/{{ r.run_id }}/{{ r.docx }}">Word</a></td></tr>
+  {% else %}<tr><td colspan="10">Aún no hay ejecuciones.</td></tr>{% endfor %}</table>
+</section>
+</main>
+<script>
+document.querySelectorAll('.s').forEach(s=>s.addEventListener('change',()=>{
+  document.querySelectorAll('.c[data-s="'+s.dataset.s+'"]').forEach(c=>c.checked=false);}));
+document.querySelectorAll('.c').forEach(c=>c.addEventListener('change',()=>{
+  if(c.checked) document.querySelector('.s[data-s="'+c.dataset.s+'"]').checked=false;}));
+let wasRunning={{ 'true' if state.running else 'false' }};
+async function poll(){
+  const r=await fetch('/status');const d=await r.json();
+  if(d.log.length) document.getElementById('log').textContent=d.log.join('\n');
+  const l=document.getElementById('log');l.scrollTop=l.scrollHeight;
+  document.getElementById('rid').textContent=d.run_id||'sin ejecutar';
+  document.getElementById('go').disabled=d.running;
+  if(d.summary){const s=d.summary;document.getElementById('sum').innerHTML=
+    `<p>Total ${s.total} · <span class="ok">PASS ${s.PASS}</span> · <span class="ko">FAIL ${s.FAIL}</span> · <span class="bl">BLOCKED ${s.BLOCKED}</span> · Aprobación ${s.pass_rate}%</p>`;}
+  if(wasRunning && !d.running){location.reload();}
+  wasRunning=d.running;
+}
+setInterval(poll,1500);poll();
+</script>
+</body></html>

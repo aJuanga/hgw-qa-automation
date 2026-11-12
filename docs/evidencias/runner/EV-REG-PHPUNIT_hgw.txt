@@ -1,0 +1,194 @@
+
+  [30;43;1m WARN [39;49;22m Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!
+
+   PASS  Tests\Unit\AuditRulesTest
+  ✓ aud01 detecta caja de ayer sin cierre y no si se cerro               1.33s  
+  ✓ aud02 detecta pedido estancado y no uno reciente o entregado         0.05s  
+  ✓ aud02 no suelta un pedido senalado por editarle una nota             0.07s  
+  ✓ aud03 detecta pago pendiente viejo salvo si el pedido ya se entrego  0.05s  
+  ✓ aud04 detecta entregado sin cobrar y no si esta pagado               0.05s  
+  ✓ aud05 detecta venta sin salida de stock                              0.05s  
+  ✓ aud06 detecta descuadre de caja fuera de tolerancia                  0.03s  
+  ✓ aud07 detecta stock en o bajo el minimo                              0.03s  
+  ✓ aud08 detecta pedido vacio y marca si es corregible                  0.05s  
+
+   PASS  Tests\Unit\CustomerSegmentationServiceTest
+  ✓ segmenta clientes por rfm                                            0.07s  
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true
+
+   PASS  Tests\Unit\LoyaltyServiceTest
+  ✓ niveles segun puntos                                                 0.02s  
+  ✓ progreso y falta para siguiente                                      0.01s  
+  ✓ nivel maximo sin siguiente                                           0.01s  
+
+   PASS  Tests\Unit\OrderQueueServiceTest
+  ✓ atiende primero el pedido corto                                      0.04s  
+  ✓ envejecimiento evita inanicion                                       0.05s  
+  ✓ rutea a estaciones paralelas                                         0.04s  
+
+   PASS  Tests\Unit\ReviewSentimentServiceTest
+  ✓ sentimiento por estrellas                                            0.03s  
+  ✓ analiza resena sin comentario por estrellas                          0.04s  
+  ✓ stats cuenta por sentimiento                                         0.03s  
+
+   PASS  Tests\Unit\SalesForecastServiceTest
+  ✓ detecta tendencia al alza y proyecta                                 0.06s  
+
+   PASS  Tests\Feature\AuditorExperimentTest
+  ✓ el plan es reproducible con la misma semilla                         0.05s  
+  ✓ sin auditor las fallas quedan abiertas al cierre                     3.95s  
+  ✓ con auditor se regulariza todo antes del cierre                      5.77s  
+
+   PASS  Tests\Feature\AuditorTest
+  ✓ detecta y se regulariza solo cuando el paso se completa              0.10s  
+  ✓ un problema repetido no duplica el hallazgo                          0.07s  
+  ✓ no repite el aviso antes de 30 minutos                               0.09s  
+  ✓ media y baja no interrumpen                                          0.06s  
+  ✓ pospuesto y revisado no avisan                                       0.11s  
+  ✓ un evento deja una cita y se verifica al vencer                      0.05s  
+  ✓ entregar sin cobrar programa la verificacion aud04                   0.05s  
+  ✓ el cierre se bloquea con pendientes importantes                      0.11s  
+  ✓ un pedido del dia sin estado final bloquea el cierre                 0.10s  
+  ✓ cierre con faltante genera aud06                                     0.08s  
+  ✓ solo se corrige automaticamente lo seguro                            0.06s  
+  ✓ el primer login de la jefa dispara la apertura                       0.15s  
+  ✓ panel solo para la jefa                                              0.11s  
+  ✓ herramientas mcp del auditor                                         0.10s  
+
+   PASS  Tests\Feature\Auth\AuthenticationTest
+  ✓ login screen can be rendered                                         0.03s  
+  ✓ users can authenticate using the login screen                        0.10s  
+  ✓ users can not authenticate with invalid password                     0.24s  
+  ✓ users can logout                                                     0.03s  
+
+   PASS  Tests\Feature\Auth\EmailVerificationTest
+  ✓ email verification screen can be rendered                            0.03s  
+  ✓ email can be verified                                                0.03s  
+  ✓ email is not verified with invalid hash                              0.03s  
+
+   PASS  Tests\Feature\Auth\PasswordConfirmationTest
+  ✓ confirm password screen can be rendered                              0.04s  
+  ✓ password can be confirmed                                            0.09s  
+  ✓ password is not confirmed with invalid password                      0.23s  
+
+   PASS  Tests\Feature\Auth\PasswordResetTest
+  ✓ reset password link screen can be rendered                           0.03s  
+  ✓ reset password link can be requested                                 0.11s  
+  ✓ reset password screen can be rendered                                0.11s  
+  ✓ password can be reset with valid token                               0.24s  
+
+   PASS  Tests\Feature\Auth\PasswordUpdateTest
+  ✓ password can be updated                                              0.23s  
+  ✓ correct password must be provided to update password                 0.09s  
+
+   PASS  Tests\Feature\Auth\RegistrationTest
+  ✓ registration screen can be rendered                                  0.03s  
+  ✓ new users can register                                               0.10s  
+
+   PASS  Tests\Feature\ClientCheckoutTest
+  ✓ cliente agrega producto al carrito                                   0.05s  
+  ✓ producto no disponible no entra al carrito                           0.03s  
+  ✓ checkout exitoso crea pedido y descuenta stock                       0.61s  
+  ✓ checkout bloqueado si no hay stock                                   0.04s  
+  ✓ checkout con carrito vacio redirige al carrito                       0.03s  
+  ✓ visitante no autenticado va al login                                 0.02s  
+  ✓ staff no accede al portal del cliente                                0.03s  
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                        0.04s  
+
+   PASS  Tests\Feature\InventoryManagementTest
+  ✓ admin agrega stock y queda registrado el movimiento                  0.04s  
+  ✓ admin descuenta stock                                                0.03s  
+  ✓ no se puede descontar mas del stock actual                           0.04s  
+  ✓ empleado no accede al inventario                                     0.03s  
+
+   PASS  Tests\Feature\LiveStatusPollingTest
+  ✓ responde 304 si nada cambio y 200 cuando cambia un pedido            0.06s  
+
+   PASS  Tests\Feature\McpApiTest
+  ✓ sin token devuelve 401                                               0.02s  
+  ✓ cliente devuelve 403                                                 0.03s  
+  ✓ jefa ve el menu                                                      0.03s  
+  ✓ periodo invalido 422                                                 0.04s  
+  ✓ compare periods responde con moneda                                  0.03s  
+  ✓ search orders responde                                               0.03s  
+  ✓ toggle product audita                                                0.05s  
+  ✓ send telegram sin config 422                                         0.04s  
+  ✓ set theme aplica y audita                                            0.03s  
+  ✓ set theme invalido 422                                               0.03s  
+
+   PASS  Tests\Feature\McpTokenCommandTest
+  ✓ genera token para la jefa                                            0.04s  
+  ✓ falla si no hay jefa                                                 0.03s  
+
+   PASS  Tests\Feature\ModifiedViewsRenderTest
+  ✓ checkout del cliente lleva la clave de idempotencia                  0.25s  
+  ✓ registrar pago lleva la clave de idempotencia                        0.05s  
+  ✓ resenas del cliente muestran la encuesta corta                       0.06s  
+  ✓ resenas de la jefa sin y con recomendaciones calculadas              0.45s  
+  ✓ panel del auditor con caja cerrada y umbrales                        0.09s  
+
+   PASS  Tests\Feature\OrderAssignmentTest
+  ✓ empleado no ve pedidos de otro empleado                              0.06s  
+  ✓ jefa ve todos los pedidos                                            0.05s  
+  ✓ empleado no puede ver detalle de pedido ajeno                        0.05s  
+  ✓ empleado puede tomar pedido del pool                                 0.06s  
+  ✓ empleado no puede robar pedido ya tomado                             0.07s  
+  ✓ pedido creado por empleado queda asignado a el                       0.05s  
+
+   PASS  Tests\Feature\PaymentFlowTest
+  ✓ admin registra pago completado                                       0.05s  
+  ✓ pago no puede superar el saldo pendiente                             0.04s  
+  ✓ verificar pago lo marca completado                                   0.05s  
+  ✓ rechazar pago lo marca fallido                                       0.05s  
+  ✓ cliente no accede a la gestion de pagos                              0.03s  
+
+   PASS  Tests\Feature\PaymentTransactionTest
+  ✓ checkout exitoso hace commit de pedido pago y salida de stock        0.18s  
+  ✓ fallo a mitad del checkout hace rollback completo                    0.06s  
+  ✓ fallo al registrar pago hace rollback                                0.04s  
+  ✓ doble envio del checkout no duplica el pedido                        0.18s  
+  ✓ doble envio del pago no cobra dos veces                              0.05s  
+  ✓ no se registra pago en pedido ya pagado                              0.04s  
+  ✓ confirmar dos veces no vuelve a confirmar                            0.05s  
+  ✓ pago confirmado no se puede rechazar                                 0.04s  
+  ✓ pago se confirma aunque el websocket este caido                      0.06s  
+  ✓ pedido del staff sin stock suficiente se rechaza                     0.05s  
+  ✓ cancelar pedido devuelve stock y deja movimiento                     0.06s  
+
+   PASS  Tests\Feature\ProductCrudTest
+  ✓ jefa crea producto y se crea su inventario                           0.04s  
+  ✓ precio es obligatorio al crear                                       0.03s  
+  ✓ jefa actualiza producto                                              0.04s  
+  ✓ jefa elimina producto y su inventario                                0.04s  
+  ✓ empleado no puede crear productos                                    0.04s  
+  ✓ cliente no puede ver listado de staff                                0.05s  
+
+   PASS  Tests\Feature\ProfileTest
+  ✓ profile page is displayed                                            0.06s  
+  ✓ profile information can be updated                                   0.03s  
+  ✓ email verification status is unchanged when the email address is un… 0.03s  
+  ✓ user can delete their account                                        0.11s  
+  ✓ correct password must be provided to delete account                  0.10s  
+
+   PASS  Tests\Feature\RatingSurveyTest
+  ✓ la encuesta completa se guarda con su duracion                       0.05s  
+  ✓ una encuesta incompleta se rechaza                                   0.05s  
+  ✓ la resena sin encuesta sigue funcionando                             0.05s  
+  ✓ exporta encuestas y pedidos para el pipeline                         0.06s  
+  ✓ el cliente recibe lo mejor valorado sin productos no disponibles     0.04s  
+  ✓ mcp recomendar por valoraciones                                      0.04s  
+  ✓ la caida se avisa a la jefa una sola vez                             0.04s  
+
+   PASS  Tests\Feature\RealtimeBudgetTest
+  ✓ solo lo critico viaja por websocket                                  0.24s  
+
+   PASS  Tests\Feature\ThemeEndpointTest
+  ✓ devuelve el tema actual y refleja el cambio                          0.03s  
+
+  Tests:    128 passed (375 assertions)
+  Duration: 20.27s
+

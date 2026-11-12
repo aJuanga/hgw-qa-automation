@@ -1,0 +1,17 @@
+# Configuración general (sin secretos). Las credenciales van en el archivo .env
+app:
+  name: "Sistema HGW - Cafetería Saludable"
+  base_url: "http://localhost:8000"
+  version: "v2.3 (rama rediseno-ui)"
+
+browser:
+  name: "chrome"          # chrome | edge | firefox
+  headless: false          # true para ejecutar sin ventana
+  window_size: "1400,900"
+  implicit_wait: 0
+  explicit_wait: 10       # segundos de espera explícita por elemento
+  page_load_limit: 3.0    # RNF-05: respuesta en menos de 3 s
+
+reports:
+  output_dir: "reports"
+  evidence_dir: "evidence"

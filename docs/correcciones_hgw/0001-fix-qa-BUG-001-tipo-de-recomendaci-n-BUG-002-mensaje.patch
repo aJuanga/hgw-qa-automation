@@ -1,0 +1,111 @@
+From 10c28270bdc1862da92995f40a2aa4f45d59ea2c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Juan=20Gabriel=20Iba=C3=B1ez=20Copatiti?=
+ <juangabriel180704@gmail.com>
+Date: Thu, 12 Nov 2026 19:08:44 -0400
+Subject: [PATCH] =?UTF-8?q?fix(qa):=20BUG-001=20tipo=20de=20recomendaci?=
+ =?UTF-8?q?=C3=B3n,=20BUG-002=20mensajes=20de=20login=20en=20espa=C3=B1ol?=
+ =?UTF-8?q?=20y=20BUG-003=20b=C3=BAsqueda=20sin=20distinguir=20may=C3=BAsc?=
+ =?UTF-8?q?ulas?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Detectados por la automatización de pruebas del Hito 4 (TQA): TC-016, TC-018 y TC-019.
+---
+ app/Http/Controllers/ProductController.php    | 12 ++++----
+ config/app.php                                |  2 +-
+ ...01_alter_recommendation_type_to_string.php | 30 +++++++++++++++++++
+ lang/es/auth.php                              |  8 +++++
+ 4 files changed, 46 insertions(+), 6 deletions(-)
+ create mode 100755 database/migrations/2026_11_12_000001_alter_recommendation_type_to_string.php
+ create mode 100755 lang/es/auth.php
+
+diff --git a/app/Http/Controllers/ProductController.php b/app/Http/Controllers/ProductController.php
+index 1e3e981..f91c2da 100644
+--- a/app/Http/Controllers/ProductController.php
++++ b/app/Http/Controllers/ProductController.php
+@@ -20,11 +20,13 @@ public function index(Request $request)
+ 
+         $products = Product::with('category')
+             ->when($search, function ($query) use ($search) {
+-                $query->where(function ($subQuery) use ($search) {
+-                    $subQuery->where('name', 'like', "%{$search}%")
+-                        ->orWhere('description', 'like', "%{$search}%")
+-                        ->orWhereHas('category', function ($categoryQuery) use ($search) {
+-                            $categoryQuery->where('name', 'like', "%{$search}%");
++                // BUG-004: búsqueda sin distinguir mayúsculas/minúsculas (LIKE en PostgreSQL sí distingue)
++                $term = '%' . mb_strtolower($search) . '%';
++                $query->where(function ($subQuery) use ($term) {
++                    $subQuery->whereRaw('LOWER(name) LIKE ?', [$term])
++                        ->orWhereRaw('LOWER(description) LIKE ?', [$term])
++                        ->orWhereHas('category', function ($categoryQuery) use ($term) {
++                            $categoryQuery->whereRaw('LOWER(name) LIKE ?', [$term]);
+                         });
+                 });
+             })
+diff --git a/config/app.php b/config/app.php
+index 2d882a8..ee07a7c 100644
+--- a/config/app.php
++++ b/config/app.php
+@@ -82,7 +82,7 @@
+     |
+     */
+ 
+-    'locale' => 'en',
++    'locale' => 'es',
+ 
+     /*
+     |--------------------------------------------------------------------------
+diff --git a/database/migrations/2026_11_12_000001_alter_recommendation_type_to_string.php b/database/migrations/2026_11_12_000001_alter_recommendation_type_to_string.php
+new file mode 100755
+index 0000000..2e67a72
+--- /dev/null
++++ b/database/migrations/2026_11_12_000001_alter_recommendation_type_to_string.php
+@@ -0,0 +1,30 @@
++<?php
++
++use Illuminate\Database\Migrations\Migration;
++use Illuminate\Support\Facades\DB;
++use Illuminate\Support\Facades\Schema;
++
++/**
++ * BUG-001 (QA Hito 4): RecommendationService guarda tipos como 'general' o 'health_based',
++ * pero la columna era un enum (muy_recomendado, recomendado, neutro, no_recomendado).
++ * En PostgreSQL el CHECK rechazaba el INSERT y el portal del cliente respondía 500.
++ */
++return new class extends Migration
++{
++    public function up(): void
++    {
++        if (DB::getDriverName() === 'pgsql') {
++            DB::statement('ALTER TABLE recommendations DROP CONSTRAINT IF EXISTS recommendations_recommendation_type_check');
++            DB::statement('ALTER TABLE recommendations ALTER COLUMN recommendation_type TYPE VARCHAR(30)');
++        } else {
++            Schema::table('recommendations', function ($table) {
++                $table->string('recommendation_type', 30)->change();
++            });
++        }
++    }
++
++    public function down(): void
++    {
++        // Sin reversión: volver al enum rompería los registros generados por el servicio.
++    }
++};
+diff --git a/lang/es/auth.php b/lang/es/auth.php
+new file mode 100755
+index 0000000..8274f52
+--- /dev/null
++++ b/lang/es/auth.php
+@@ -0,0 +1,8 @@
++<?php
++
++// BUG-002: mensajes de autenticación en español (antes se mostraban los textos por defecto en inglés)
++return [
++    'failed' => 'El correo o la contraseña no son correctos.',
++    'password' => 'La contraseña ingresada no es correcta.',
++    'throttle' => 'Demasiados intentos de inicio de sesión. Intenta de nuevo en :seconds segundos.',
++];
+-- 
+2.43.0
+
