@@ -19,7 +19,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:7px 6px;b
 .ok{color:var(--g2);font-weight:700}.ko{color:var(--ko);font-weight:700}.bl{color:var(--bl);font-weight:700}
 .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;background:#e7f2ec;color:var(--g)}
 .full{grid-column:1/3}a{color:var(--g2)}
-</style></head><body>
+@keyframes blink{50%{opacity:.2}}</style></head><body>
 <header><div><h1>HGW QA Runner</h1><small>Selenium WebDriver · Python · Page Object Model</small></div>
 <div><a href="/ia" style="color:#fff;background:#1f8a4c;padding:8px 14px;border-radius:8px;text-decoration:none;margin-right:14px"><b>Agente IA · Gherkin</b></a><small>Sistema bajo prueba:</small> <b>{{ base_url }}</b></div></header>
 <main>
@@ -51,6 +51,12 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:7px 6px;b
 <section class="box" id="estado">
   <h2>3. Estado de la ejecución <span id="rid" class="pill">{{ state.run_id or 'sin ejecutar' }}</span></h2>
   <div id="sum"></div>
+  <div id="livebox" style="display:none;margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:10px;height:10px;border-radius:50%;background:#e11d48;display:inline-block;animation:blink 1s infinite"></span>
+      <b>EN VIVO</b> <span id="lcase" style="color:var(--mut);font-size:13px"></span></div>
+    <img id="lframe" style="width:100%;border-radius:10px;border:2px solid var(--g2);background:#0f1f17;min-height:120px" alt="Pantalla del HGW en vivo">
+    <ul id="lsteps" style="list-style:none;padding:0;margin:8px 0 0;font-size:13px;max-height:220px;overflow:auto"></ul>
+  </div>
   <pre id="log">Esperando ejecución...</pre>
 </section>
 <section class="box full">
@@ -80,5 +86,18 @@ async function poll(){
   wasRunning=d.running;
 }
 setInterval(poll,1500);poll();
+async function livePoll(){
+  try{const r=await fetch('/live');const d=await r.json();
+  const box=document.getElementById('livebox');
+  if(!d.running && !d.frame){box.style.display='none';return;}
+  box.style.display='block';
+  if(d.frame) document.getElementById('lframe').src='data:image/png;base64,'+d.frame;
+  document.getElementById('lcase').textContent=d.case||'';
+  document.getElementById('lsteps').innerHTML=d.steps.map(s=>s.t==='case'
+    ?`<li style="margin-top:6px;font-weight:700;color:var(--g)">▶ ${s.txt}</li>`
+    :`<li style="padding:2px 0;color:${s.t==='ok'?'#1b7a3a':s.t==='ko'?'#c0392b':'#5d6d64'}">${s.t==='ok'?'✔':s.t==='ko'?'✘':'📷'} ${s.txt}</li>`).join('');
+  const u=document.getElementById('lsteps');u.scrollTop=u.scrollHeight;}catch(e){}
+}
+setInterval(livePoll,900);livePoll();
 </script>
 </body></html>

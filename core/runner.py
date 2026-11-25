@@ -59,6 +59,8 @@ def run_case(case, evidence_dir, log):
     ctx = None
     try:
         driver = create_driver()
+        from core import live
+        live.set_case(driver, f"{case.id} - {case.title}")
         ctx = Context(driver=driver, case=case, evidence_dir=evidence_dir)
         case.func(ctx)
         if any(not c.passed for c in ctx.checks):

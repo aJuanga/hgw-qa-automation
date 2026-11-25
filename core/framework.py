@@ -60,6 +60,8 @@ class Context:
 
     def check(self, condition, description, detail=""):
         self.checks.append(Check(description, bool(condition), "" if condition else detail))
+        from core import live
+        live.step(bool(condition), description + ("" if condition else f" — {detail}"))
         return bool(condition)
 
     def require(self, condition, description, detail=""):
@@ -72,6 +74,8 @@ class Context:
         path = self.evidence_dir / f"{self.case.id}_{len(self.screenshots) + 1:02d}_{safe}.png"
         self.driver.save_screenshot(str(path))
         self.screenshots.append({"label": label, "path": str(path)})
+        from core import live
+        live.info(f"Captura de evidencia: {label}")
         return path
 
     def measure(self, name, start):

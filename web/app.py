@@ -35,11 +35,15 @@ def _worker(suites, ids, mail_to, use_ai, headless, run_id):
         STATE["log"].append(f"{datetime.now():%H:%M:%S}  {msg}")
     try:
         config.headless = headless
+        from core import live
+        live.start()
         STATE["result"] = execute(suites=suites, ids=ids, mail_to=mail_to, use_ai=use_ai, log=log, run_name=run_id)
     except Exception as exc:
         log(f"ERROR: {exc}")
     finally:
         STATE["running"] = False
+        from core import live
+        live.stop()
 
 
 @app.route("/ia", methods=["GET", "POST"])
@@ -77,6 +81,12 @@ def run():
         threading.Thread(target=_worker, args=(suites or None, ids or None, mail_to, use_ai, headless, run_id),
                          daemon=True).start()
     return redirect(url_for("index") + "#estado")
+
+
+@app.get("/live")
+def live_view():
+    from core.live import LIVE
+    return jsonify(frame=LIVE["frame"], case=LIVE["case"], steps=LIVE["steps"][-14:], running=STATE["running"])
 
 
 @app.get("/status")
