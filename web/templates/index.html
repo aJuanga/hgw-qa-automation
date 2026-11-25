@@ -24,7 +24,14 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:7px 6px;b
 <div><small>Sistema bajo prueba:</small> <b>{{ base_url }}</b></div></header>
 <main>
 <form class="box" method="post" action="/run" id="f">
-  <h2>1. Selecciona las suites o casos</h2>
+  <h2>1. Tipos de prueba</h2>
+  <div class="suite">
+  {% for t, lista in tipos.items() %}
+    <label style="display:block;margin:4px 0"><input type="checkbox" name="tipo" value="{{ t }}"> <b>{{ t }}</b>
+      <i style="color:var(--mut);font-size:13px">({{ 'todos los casos' if lista == '*' else lista|join(', ') }})</i></label>
+  {% endfor %}
+  </div>
+  <h2>o selecciona las suites / casos</h2>
   {% for suite, cases in suites.items() %}
   <div class="suite">
     <label><input type="checkbox" name="suite" value="{{ suite }}" class="s" data-s="{{ suite }}"> {{ suite }}

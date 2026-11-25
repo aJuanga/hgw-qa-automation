@@ -11,7 +11,7 @@ from datetime import datetime
 from flask import Flask, abort, jsonify, redirect, render_template, request, send_from_directory, url_for
 
 from core.config import config
-from core.runner import execute, list_suites
+from core.runner import TIPOS, execute, ids_por_tipo, list_suites
 
 app = Flask(__name__)
 STATE = {"running": False, "run_id": None, "log": [], "result": None}
@@ -44,7 +44,7 @@ def _worker(suites, ids, mail_to, use_ai, headless, run_id):
 
 @app.route("/")
 def index():
-    return render_template("index.html", suites=list_suites(), history=_history(), state=STATE,
+    return render_template("index.html", tipos=TIPOS, suites=list_suites(), history=_history(), state=STATE,
                            base_url=config.base_url, default_mail=os.getenv("MAIL_TO", ""),
                            ai_ready=bool(os.getenv("ANTHROPIC_API_KEY")), headless=config.headless)
 
@@ -56,6 +56,9 @@ def run():
             return redirect(url_for("index"))
         suites = request.form.getlist("suite")
         ids = request.form.getlist("case")
+        tipos = request.form.getlist("tipo")
+        if tipos:
+            ids = list(dict.fromkeys(ids + ids_por_tipo(tipos)))
         if not suites and not ids:
             return redirect(url_for("index"))
         run_id = datetime.now().strftime("RUN_%Y%m%d_%H%M%S")

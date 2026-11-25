@@ -20,6 +20,27 @@ def list_suites():
     return suites
 
 
+# Tipos de prueba (checklist del runner): cada tipo agrupa uno o más test cases
+TIPOS = {
+    "Smoke": ["TC-001", "TC-005", "TC-010", "TC-016", "TC-017"],
+    "Regresión": "*",
+    "Funcional (caja negra)": ["TC-001", "TC-002", "TC-003", "TC-004", "TC-005", "TC-006", "TC-007", "TC-008",
+                               "TC-009", "TC-010", "TC-011", "TC-012", "TC-013", "TC-018", "TC-019"],
+    "Negativas (valores inválidos)": ["TC-002", "TC-003", "TC-004", "TC-007", "TC-008", "TC-009", "TC-011", "TC-013"],
+    "Seguridad (roles y acceso)": ["TC-014", "TC-015", "TC-016"],
+    "No funcional (rendimiento)": ["TC-017"],
+}
+
+
+def ids_por_tipo(tipos):
+    todos = [c.id for c in load_all_tests()]
+    ids = []
+    for t in tipos or []:
+        lista = todos if TIPOS.get(t) == "*" else TIPOS.get(t, [])
+        ids += [i for i in lista if i not in ids]
+    return ids
+
+
 def select_cases(suites=None, ids=None):
     cases = load_all_tests()
     if ids:
