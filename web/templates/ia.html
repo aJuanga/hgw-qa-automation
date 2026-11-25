@@ -16,8 +16,29 @@ pre{background:#0f1f17;color:#d7f5e3;border-radius:10px;padding:14px;font:13px/1
 .flow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--mut);margin-bottom:12px}
 .flow b{background:#e7f4ec;color:var(--g);padding:6px 10px;border-radius:8px}
 details{margin-bottom:10px}summary{cursor:pointer;font-weight:600}
+
+/* ===== HGW Sentinel · tema oscuro ===== */
+body{background:#070d0a!important;color:#d6ecdf!important;background-image:radial-gradient(circle at 15% 0%,#0f2a1d 0,transparent 45%),radial-gradient(circle at 90% 10%,#0b2233 0,transparent 40%)!important}
+header{background:rgba(6,14,10,.9)!important;border-bottom:1px solid #1f8a4c55;backdrop-filter:blur(6px);position:sticky;top:0;z-index:5}
+header h1{letter-spacing:.5px}header h1 span{color:#3ddc84}
+.box{background:#0d1913!important;border:1px solid #1c3b2b!important;box-shadow:0 0 0 1px #0b2a1c inset,0 10px 30px #0006}
+h2{color:#7ee2a8!important}.suite{border-color:#1c3b2b!important;background:#0a140f}.cases{color:#8fb3a0!important}
+pre,#log{background:#020604!important;color:#7CFFB2!important;border:1px solid #1c3b2b;font-family:Consolas,monospace}
+table{color:#d6ecdf}th{background:#10241a!important;color:#7ee2a8!important}td{border-color:#1c3b2b!important}
+input[type=text],input[type=email],textarea{background:#08110c!important;color:#d6ecdf!important;border:1px solid #1f8a4c66!important}
+button,#go{background:linear-gradient(90deg,#1f8a4c,#22c55e)!important;color:#03140a!important;font-weight:700;box-shadow:0 0 18px #22c55e55}
+a{color:#7ee2a8}.pill{background:#103322!important;color:#7CFFB2!important}
+small,i{color:#8fb3a0}
+#chatbtn{position:fixed;right:22px;bottom:22px;z-index:20;border-radius:30px;padding:14px 20px;font-size:15px}
+#chat{position:fixed;right:22px;bottom:80px;width:390px;max-height:70vh;display:none;flex-direction:column;z-index:20;background:#0b1611;border:1px solid #22c55e66;border-radius:14px;box-shadow:0 20px 50px #000a;overflow:hidden}
+#chat .hd{padding:12px 14px;background:#10241a;font-weight:700;color:#7CFFB2}
+#msgs{padding:12px;overflow:auto;flex:1;font-size:13.5px;display:flex;flex-direction:column;gap:8px;min-height:260px}
+.m{padding:9px 11px;border-radius:10px;white-space:pre-wrap;line-height:1.45}.m.u{background:#1f8a4c;color:#fff;align-self:flex-end;max-width:85%}
+.m.b{background:#132a1e;color:#d6ecdf;align-self:flex-start;max-width:92%;border:1px solid #1c3b2b}
+#chat form{display:flex;border-top:1px solid #1c3b2b}#chat input{flex:1;padding:12px;border:0!important;outline:0}
+#chat form button{border-radius:0;margin:0;padding:0 16px;box-shadow:none}
 </style></head><body>
-<header><div><h1>Agente IA · Test case → Gherkin → Selenium</h1><small>HGW QA Automation</small></div>
+<header><div><h1>Agente IA · Test case → Gherkin → Selenium</h1><small>HGW Sentinel · QA Automation</small></div>
 <a href="/">← Volver al runner</a></header>
 <main>
 <div class="box full"><div class="flow"><b>1. Test case (plantilla)</b>→<b>2. IA genera Gherkin</b>→<b>3. IA genera código Selenium</b>→<b>4. Play: ejecución automática</b>→<b>5. Reporte Word + HTML por correo</b></div></div>
@@ -51,6 +72,6 @@ document.querySelectorAll('pre.gh').forEach(p=>{p.innerHTML=p.innerHTML
  .replace(/^(\s*#.*)$/gm,'<span class="cm">$1</span>')
  .replace(/(@[\w\-]+)/g,'<span class="tag">$1</span>')
  .replace(/^(\s*)(Característica|Escenario|Dado|Cuando|Entonces|Y)\b/gm,'$1<span class="kw">$2</span>')
- .replace(/(«[^»]*»|"[^"]*")/g,'<span class="str">$1</span>');});
+ .replace(/(«[^»]*»)/g,'<span class="str">$1</span>');});
 </script>
 </body></html>

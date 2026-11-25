@@ -83,6 +83,33 @@ def run():
     return redirect(url_for("index") + "#estado")
 
 
+def _ultimo():
+    if STATE.get("result"):
+        return STATE["result"]
+    for d in sorted(config.reports_dir.glob("RUN_*"), reverse=True):
+        f = d / "results.json"
+        if f.exists():
+            return json.loads(f.read_text(encoding="utf-8"))
+    return None
+
+
+@app.post("/chat")
+def chat():
+    from ai.chat import responder
+    msg = (request.json or {}).get("msg", "")
+    res = responder(msg, _ultimo())
+    orden = res.pop("run", None)
+    if orden:
+        with LOCK:
+            if STATE["running"]:
+                return jsonify(texto="Ya hay una ejecución en curso; espera a que termine.")
+            run_id = datetime.now().strftime("RUN_%Y%m%d_%H%M%S")
+            STATE.update(running=True, run_id=run_id, log=[], result=None)
+            threading.Thread(target=_worker, args=(None, orden["ids"], orden.get("mail"), True, False, run_id),
+                             daemon=True).start()
+    return jsonify(**res)
+
+
 @app.get("/live")
 def live_view():
     from core.live import LIVE

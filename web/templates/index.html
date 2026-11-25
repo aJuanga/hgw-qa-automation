@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HGW QA Runner</title>
+<title>HGW Sentinel · QA Automation</title>
 <style>
 :root{--g:#14532d;--g2:#1f8a4c;--ko:#c0392b;--bl:#b9770e;--ink:#1d2a24;--mut:#5d6d64;--line:#dfe7e2;--bg:#f4f7f5}
 *{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
@@ -19,8 +19,29 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:7px 6px;b
 .ok{color:var(--g2);font-weight:700}.ko{color:var(--ko);font-weight:700}.bl{color:var(--bl);font-weight:700}
 .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;background:#e7f2ec;color:var(--g)}
 .full{grid-column:1/3}a{color:var(--g2)}
-@keyframes blink{50%{opacity:.2}}</style></head><body>
-<header><div><h1>HGW QA Runner</h1><small>Selenium WebDriver · Python · Page Object Model</small></div>
+@keyframes blink{50%{opacity:.2}}
+/* ===== HGW Sentinel · tema oscuro ===== */
+body{background:#070d0a!important;color:#d6ecdf!important;background-image:radial-gradient(circle at 15% 0%,#0f2a1d 0,transparent 45%),radial-gradient(circle at 90% 10%,#0b2233 0,transparent 40%)!important}
+header{background:rgba(6,14,10,.9)!important;border-bottom:1px solid #1f8a4c55;backdrop-filter:blur(6px);position:sticky;top:0;z-index:5}
+header h1{letter-spacing:.5px}header h1 span{color:#3ddc84}
+.box{background:#0d1913!important;border:1px solid #1c3b2b!important;box-shadow:0 0 0 1px #0b2a1c inset,0 10px 30px #0006}
+h2{color:#7ee2a8!important}.suite{border-color:#1c3b2b!important;background:#0a140f}.cases{color:#8fb3a0!important}
+pre,#log{background:#020604!important;color:#7CFFB2!important;border:1px solid #1c3b2b;font-family:Consolas,monospace}
+table{color:#d6ecdf}th{background:#10241a!important;color:#7ee2a8!important}td{border-color:#1c3b2b!important}
+input[type=text],input[type=email],textarea{background:#08110c!important;color:#d6ecdf!important;border:1px solid #1f8a4c66!important}
+button,#go{background:linear-gradient(90deg,#1f8a4c,#22c55e)!important;color:#03140a!important;font-weight:700;box-shadow:0 0 18px #22c55e55}
+a{color:#7ee2a8}.pill{background:#103322!important;color:#7CFFB2!important}
+small,i{color:#8fb3a0}
+#chatbtn{position:fixed;right:22px;bottom:22px;z-index:20;border-radius:30px;padding:14px 20px;font-size:15px}
+#chat{position:fixed;right:22px;bottom:80px;width:390px;max-height:70vh;display:none;flex-direction:column;z-index:20;background:#0b1611;border:1px solid #22c55e66;border-radius:14px;box-shadow:0 20px 50px #000a;overflow:hidden}
+#chat .hd{padding:12px 14px;background:#10241a;font-weight:700;color:#7CFFB2}
+#msgs{padding:12px;overflow:auto;flex:1;font-size:13.5px;display:flex;flex-direction:column;gap:8px;min-height:260px}
+.m{padding:9px 11px;border-radius:10px;white-space:pre-wrap;line-height:1.45}.m.u{background:#1f8a4c;color:#fff;align-self:flex-end;max-width:85%}
+.m.b{background:#132a1e;color:#d6ecdf;align-self:flex-start;max-width:92%;border:1px solid #1c3b2b}
+#chat form{display:flex;border-top:1px solid #1c3b2b}#chat input{flex:1;padding:12px;border:0!important;outline:0}
+#chat form button{border-radius:0;margin:0;padding:0 16px;box-shadow:none}
+</style></head><body>
+<header><div><h1>HGW <span>Sentinel</span> · QA Automation</h1><small>Selenium WebDriver · Gherkin · Page Object Model · IA · Tiempo real</small></div>
 <div><a href="/ia" style="color:#fff;background:#1f8a4c;padding:8px 14px;border-radius:8px;text-decoration:none;margin-right:14px"><b>Agente IA · Gherkin</b></a><small>Sistema bajo prueba:</small> <b>{{ base_url }}</b></div></header>
 <main>
 <form class="box" method="post" action="/run" id="f">
@@ -99,5 +120,23 @@ async function livePoll(){
   const u=document.getElementById('lsteps');u.scrollTop=u.scrollHeight;}catch(e){}
 }
 setInterval(livePoll,900);livePoll();
+</script>
+
+<button id="chatbtn" onclick="tg()">🤖 Asistente IA</button>
+<div id="chat"><div class="hd">🤖 Asistente QA · HGW Sentinel</div><div id="msgs">
+<div class="m b">Hola, soy el asistente QA. Pídeme cosas como:
+• «corre las pruebas smoke»
+• «prueba el auditor y el MCP»
+• «ejecuta TC-001 y manda el reporte a tu@correo.com»
+• «muéstrame el gherkin del TC-010»
+• «¿qué falló?»</div></div>
+<form onsubmit="return send(event)"><input id="q" placeholder="Escribe una orden..." autocomplete="off"><button>➤</button></form></div>
+<script>
+function tg(){const c=document.getElementById('chat');c.style.display=c.style.display==='flex'?'none':'flex';document.getElementById('q').focus();}
+function add(t,k){const d=document.createElement('div');d.className='m '+k;d.textContent=t;const m=document.getElementById('msgs');m.appendChild(d);m.scrollTop=m.scrollHeight;}
+async function send(e){e.preventDefault();const q=document.getElementById('q');const t=q.value.trim();if(!t)return false;add(t,'u');q.value='';
+ try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({msg:t})});const d=await r.json();add(d.texto,'b');
+ if(/Ejecut|ejecuto/.test(d.texto)){wasRunning=true;document.getElementById('estado').scrollIntoView({behavior:'smooth'});}}catch(x){add('No pude conectar con el runner.','b');}
+ return false;}
 </script>
 </body></html>
