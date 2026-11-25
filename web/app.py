@@ -42,6 +42,14 @@ def _worker(suites, ids, mail_to, use_ai, headless, run_id):
         STATE["running"] = False
 
 
+@app.route("/ia", methods=["GET", "POST"])
+def ia():
+    from ai.gherkin import EJEMPLO, generar, gherkin_proyecto
+    texto = request.form.get("tc", EJEMPLO)
+    res = generar(texto) if request.method == "POST" else None
+    return render_template("ia.html", texto=texto, res=res, proyecto=gherkin_proyecto())
+
+
 @app.route("/")
 def index():
     return render_template("index.html", tipos=TIPOS, suites=list_suites(), history=_history(), state=STATE,
